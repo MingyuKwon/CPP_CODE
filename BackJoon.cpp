@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #include <vector>
 #include <map>
+#include <stack>
 #include <string>
 #include <algorithm>
 
@@ -12,42 +13,76 @@ int main(int argc, char const* argv[]) {
     cin.tie(NULL); // cin과 cout의 동기화를 끊어서 속도 향상
     cout.tie(NULL); // cin과 cout의 동기화를 끊어서 속도 향상
 
-    int notHearCount;
-    int notSeeCount;
-
-    cin >> notHearCount >> notSeeCount;
-
     vector<string> resultVector;
-    map<string, int> MAP;
+    stack<char> STACK;
 
     string input;
+    while (true) {
 
-    for (int i = 0; i < notHearCount; i++)
-    {
-        cin >> input;
-        MAP[input] = 1;
-    }
+        getline(cin, input);
+        if (input == ".")
+            break;
 
-    int Count = 0;
-
-    for (int i = 0; i < notSeeCount; i++)
-    {
-        cin >> input;
-        if (MAP.find(input) != MAP.end())
-        {
-            Count++;
-            resultVector.push_back(input);
+        while (!STACK.empty()) {
+            STACK.pop();
         }
-        
+
+        bool flag = true;
+
+        for (char ch : input)
+        {
+            if (ch == '(')
+            {
+                STACK.push('(');
+            }
+            else if (ch == '[')
+            {
+                STACK.push('[');
+            }
+            else if (ch == ')')
+            {
+                if ((!STACK.empty()) && (STACK.top() == '('))
+                {
+                    STACK.pop();
+                }
+                else
+                {
+                    flag = false;
+                    break;
+                }
+            }
+            else if (ch == ']')
+            {
+                if ((!STACK.empty()) && (STACK.top() == '['))
+                {
+                    STACK.pop();
+                }
+                else
+                {
+                    flag = false;
+                    break;
+                }
+            }
+        }
+
+        if (flag && STACK.empty())
+        {
+            cout << "yes" << endl;
+            //resultVector.push_back("yes");
+        }
+        else
+        {
+            cout << "no" << endl;
+            //resultVector.push_back("no");
+        }
     }
 
-    sort(resultVector.begin(), resultVector.end());
-    
-    cout << Count << endl;
-    for (auto ans : resultVector)
-    {
-        cout << ans << endl;
-    }
+
+
+    //for (auto ans : resultVector)
+    //{
+       // cout << ans << endl;
+    //}
 
     return 0;
 }
