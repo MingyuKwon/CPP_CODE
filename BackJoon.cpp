@@ -9,7 +9,7 @@
 
 using namespace std;
 
-int DPResult[100001][101]; // 이건 index이하의 무게를 가질 때 최대 가치
+int DPResult[100001]; // 이건 index이하의 무게를 가질 때 최대 가치
 vector<int> argVector;
 
 vector<int> weightVector;
@@ -37,30 +37,17 @@ int main(int argc, char const* argv[]) {
         valueVector.push_back(input2);
     }
 
-    for (int i = 1; i <= weightLimit; i++)
+    for (int j = 1; j <= num; j++)
     {
-        for (int j = 1; j <= num; j++)
+        for (int i = weightLimit; i >= weightVector[j-1]; i--)
         {
-            if (weightVector[j - 1] > weightLimit)
-            {
-                DPResult[i][j] = DPResult[i][j - 1];
-            }
-            else
-            {
-                if (i >= weightVector[j - 1])
-                {
-                    DPResult[i][j] = max(DPResult[i - weightVector[j - 1]][j - 1] + valueVector[j - 1], DPResult[i][j - 1]);
-                }
-                else
-                {
-                    DPResult[i][j] = DPResult[i][j - 1];
-                }
-                
-            }
+            DPResult[i] = max(DPResult[i], DPResult[i - weightVector[j-1]] + valueVector[j-1]);
         }
     }
 
-    cout << DPResult[weightLimit][num];
+    
+
+    cout << DPResult[weightLimit];
 
 
 
