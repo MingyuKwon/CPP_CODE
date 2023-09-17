@@ -14,7 +14,6 @@ vector<int> argVector;
 
 vector<int> weightVector;
 vector<int> valueVector;
-vector<int> countVector;
 
 int num;
 int weightLimit;
@@ -30,44 +29,29 @@ int main(int argc, char const* argv[]) {
 
     int input1;
     int input2;
-    int input3;
 
-    for (int i = 0; i < num; i++)
+    for (int i = 0; i < num ; i++)
     {
-        cin >> input1 >> input2 >> input3;
-
+        cin >> input1 >> input2;
         weightVector.push_back(input1);
         valueVector.push_back(input2);
-        countVector.push_back(input3);
-
     }
 
-    for (int j = 1; j <= valueVector.size(); j++)
+    for (int j = 1; j <= num; j++)
     {
-
-        int k = countVector[j - 1];
-        int t = 1;
-
-        while (k > 0)
+        for (int i = weightLimit; i >= weightVector[j-1]; i--)
         {
-            int temp = min(k, t);
-
-            for (int i = weightLimit; i >= weightVector[j - 1] * temp; i--)
-            {
-                DPResult[i] = max(DPResult[i], DPResult[i - weightVector[j - 1] * temp] + valueVector[j - 1] * temp);
-            }
-
-            t *= 2;
-            k -= temp;
-
+            DPResult[i] = max(DPResult[i], DPResult[i - weightVector[j-1]] + valueVector[j-1]);
         }
-        
     }
 
+    
 
     cout << DPResult[weightLimit];
 
 
+
+    
 
     return 0;
 }
